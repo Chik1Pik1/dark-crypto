@@ -1,112 +1,70 @@
-/* ================== TELEGRAM ================== */
-
-const tg = window.Telegram?.WebApp;
-if (tg) tg.expand();
-
-/* ================== CONFIG ================== */
-
-const BALANCE_REFRESH_INTERVAL = 10000;
-
-/* ================== STATE ================== */
-
-window.walletConnected = false;
-window.walletAddress = null;
-window.walletBalance = 0;
-
-let balanceTimer = null;
-
-/* ================== TON CONNECT ================== */
-
-window.tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
-  manifestUrl: "https://dark-crypto.netlify.app/tonconnect-manifest.json"
-});
-
-/* ================== UI ELEMENTS ================== */
-
-const connectBtn = document.getElementById("connectWallet");
-const walletStatus = document.getElementById("walletStatus");
-const walletInfo = document.getElementById("walletInfo");
-const balanceDiv = document.getElementById("balance");
-
-/* ================== HELPERS ================== */
-
-window.shortAddress = function (addr) {
-  if (!addr) return "";
-  return addr.slice(0, 6) + "..." + addr.slice(-4);
+window.Wallet = {
+  ton: null,
+  address: null,
+  balance: 0
 };
 
-/* ================== BALANCE ================== */
+let tonConnectUI = null;
 
-window.loadWalletBalance = async function (address) {
+document.addEventListener("DOMContentLoaded", () => {
+  initTonConnect();
+});
+
+function initTonConnect() {
+  tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
+    manifestUrl: "https://dark-crypto.netlify.app/tonconnect-manifest.json"
+  });
+
+  const btn = document.getElementById("connect-wallet");
+
+  tonConnectUI.onStatusChange(async wallet => {
+    if (!wallet) {
+      Wallet.address = null;
+      Wallet.balance = 0;
+      renderWallet();
+      return;
+    }
+
+    Wallet.address = wallet.account.address;
+    await fetchBalance();
+    renderWallet();
+  });
+
+  btn.addEventListener("click", () => {
+    tonConnectUI.openModal();
+  });
+
+  renderWallet();
+}
+
+async function fetchBalance() {
   try {
-    const res = await fetch(`https://tonapi.io/v2/accounts/${address}`);
-    const data = await res.json();
-
-    window.walletBalance = Number(data.balance) / 1e9;
-    balanceDiv.innerText = `Баланс: ${window.walletBalance.toFixed(2)} TON`;
-  } catch {
-    balanceDiv.innerText = "Баланс: ошибка загрузки";
-  }
-};
-
-/* ================== AUTO REFRESH ================== */
-
-function startBalanceAutoRefresh() {
-  stopBalanceAutoRefresh();
-
-  balanceTimer = setInterval(() => {
-    if (window.walletConnected && window.walletAddress) {
-      window.loadWalletBalance(window.walletAddress);
-    }
-  }, BALANCE_REFRESH_INTERVAL);
-}
-
-function stopBalanceAutoRefresh() {
-  if (balanceTimer) {
-    clearInterval(balanceTimer);
-    balanceTimer = null;
+    const res = await fetch(
+      `https://toncenter.com/api/v2/getAddressBalance?address=${Wallet.address}`
+    );
+    const json = await res.json();
+    Wallet.balance = Number(json.result) / 1e9;
+  } catch (e) {
+    console.error("TON balance error", e);
+    Wallet.balance = 0;
   }
 }
 
-/* ================== CONNECT / DISCONNECT ================== */
+function renderWallet() {
+  const addr = document.getElementById("wallet-address");
+  const bal = document.getElementById("wallet-balance");
+  const btn = document.getElementById("connect-wallet");
 
-if (connectBtn) {
-  connectBtn.onclick = async () => {
-    if (!window.walletConnected) {
-      await window.tonConnectUI.openModal();
-    } else {
-      await window.tonConnectUI.disconnect();
-    }
-  };
-}
-
-/* ================== STATUS CHANGE ================== */
-
-window.tonConnectUI.onStatusChange(async wallet => {
-  if (wallet?.account?.address) {
-    window.walletConnected = true;
-    window.walletAddress = wallet.account.address;
-
-    walletStatus.innerText = "🟢 Кошелёк подключён";
-    walletInfo.innerHTML = `
-      <div>Сеть: TON Mainnet</div>
-      <div>Адрес: ${shortAddress(window.walletAddress)}</div>
-    `;
-
-    connectBtn.innerText = "Отключить кошелёк";
-
-    await window.loadWalletBalance(window.walletAddress);
-    startBalanceAutoRefresh();
-  } else {
-    window.walletConnected = false;
-    window.walletAddress = null;
-    window.walletBalance = 0;
-
-    walletStatus.innerText = "🔴 Кошелёк не подключён";
-    walletInfo.innerHTML = "";
-    balanceDiv.innerText = "Баланс: 0.00 TON";
-    connectBtn.innerText = "Подключить кошелёк";
-
-    stopBalanceAutoRefresh();
+  if (!Wallet.address) {
+    addr.textContent = "";
+    bal.textContent = "0 TON";
+    btn.textContent = "Подключить кошелёк";
+    return;
   }
-});
+
+  addr.textContent =
+    Wallet.address.slice(0, 6) + "..." + Wallet.address.slice(-4);
+
+  bal.textContent = Wallet.balance.toFixed(2) + " TON";
+  btn.textContent = "Кошелёк подключён";
+}

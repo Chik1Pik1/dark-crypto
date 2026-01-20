@@ -8,6 +8,9 @@
   <!-- Telegram -->
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
+  <!-- TON Connect -->
+<script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
+
   <!-- Supabase -->
   <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 
@@ -16,6 +19,13 @@
 <body>
 
   <!-- USER -->
+  <div id="wallet" style="margin-top:10px;text-align:center">
+  <div id="wallet-address" style="font-size:12px;opacity:.7"></div>
+  <div id="wallet-balance" style="font-size:14px;font-weight:bold">0 TON</div>
+  <button id="connect-wallet" class="button" style="margin-top:6px">
+    Подключить кошелёк
+  </button>
+</div>
   <div id="user" style="text-align:center; margin-top:20px;">
     <img id="user-avatar" style="width:80px;height:80px;border-radius:50%" />
     <div id="user-name"></div>

@@ -1,21 +1,22 @@
-let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
-
-function initFavorites() {
-  document.querySelectorAll(".fav-btn").forEach(btn => {
-    const id = btn.dataset.id;
-    if (favorites.includes(id)) btn.textContent = "💖";
-
-    btn.onclick = () => {
-      if (favorites.includes(id)) {
-        favorites = favorites.filter(f => f !== id);
-        btn.textContent = "❤️";
-      } else {
-        favorites.push(id);
-        btn.textContent = "💖";
-      }
-      localStorage.setItem("favorites", JSON.stringify(favorites));
-    };
-  });
+function loadFavorites() {
+  App.favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
 }
 
-window.initFavorites = initFavorites;
+function saveFavorites() {
+  localStorage.setItem("favorites", JSON.stringify(App.favorites));
+}
+
+function isFavorite(id) {
+  return App.favorites.includes(id);
+}
+
+function toggleFavorite(id) {
+  if (isFavorite(id)) {
+    App.favorites = App.favorites.filter(f => f !== id);
+  } else {
+    App.favorites.push(id);
+  }
+
+  saveFavorites();
+  renderProducts();
+}

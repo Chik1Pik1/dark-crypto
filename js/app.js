@@ -1,28 +1,45 @@
-/* ================== APP ENTRY POINT ================== */
+/* ================== TELEGRAM AUTH ================== */
 
-// Проверка Supabase
-if (!window.supabase) {
-  console.error("Supabase не подключён");
+const tg = window.Telegram?.WebApp;
+
+if (!tg || !tg.initData) {
+  // НЕ Telegram → стоп
+  document.body.innerHTML = `
+    <div style="color:white;text-align:center;margin-top:40vh">
+      ❌ Откройте магазин через Telegram бота
+    </div>
+  `;
+  throw new Error("Not Telegram WebApp");
 }
 
-// Проверка TON Connect
-if (!window.tonConnectUI) {
-  console.error("TON Connect не инициализирован");
+tg.ready();
+tg.expand();
+
+/* ================== USER ================== */
+
+const tgUser = tg.initDataUnsafe?.user;
+
+if (!tgUser || !tgUser.id) {
+  document.body.innerHTML = `
+    <div style="color:white;text-align:center;margin-top:40vh">
+      ❌ Не удалось получить данные Telegram пользователя
+    </div>
+  `;
+  throw new Error("Telegram user not found");
 }
 
-// Проверка основных DOM-элементов
+window.AUTH_USER = {
+  id: tgUser.id,
+  username: tgUser.username || null,
+  first_name: tgUser.first_name || "",
+  last_name: tgUser.last_name || ""
+};
+
+console.log("AUTH USER:", window.AUTH_USER);
+
+/* ================== START APP ================== */
+
 document.addEventListener("DOMContentLoaded", () => {
-  // Навигация
-  if (typeof window.initNavigation === "function") {
-    window.initNavigation();
-  }
-
-  // Загрузка товаров
-  if (typeof window.loadProducts === "function") {
-    window.loadProducts();
-  } else {
-    console.error("loadProducts() не найдена");
-  }
-
-  console.log("App initialized successfully");
+  initNavigation();
+  loadProducts();
 });

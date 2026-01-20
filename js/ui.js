@@ -1,27 +1,15 @@
-/* ================== NOTIFICATIONS ================== */
-
-window.showNotification = function (text) {
-  let notification = document.getElementById("notification");
-
-  if (!notification) {
-    notification = document.createElement("div");
-    notification.id = "notification";
-    document.body.appendChild(notification);
+document.addEventListener("click", e => {
+  if (e.target.classList.contains("card")) {
+    e.target.style.transform = "scale(0.97)";
+    setTimeout(() => e.target.style.transform = "", 150);
   }
+});
 
-  notification.innerText = text;
-  notification.style.display = "block";
-  notification.style.zIndex = "9999";
+function shareReferral() {
+  if (!App.tg || !App.user) return;
 
-  clearTimeout(notification._timer);
-  notification._timer = setTimeout(() => {
-    notification.style.display = "none";
-  }, 4000);
-};
-
-/* ================== HELPERS ================== */
-
-window.shortAddress = function (addr) {
-  if (!addr) return "";
-  return addr.slice(0, 6) + "..." + addr.slice(-4);
-};
+  const link = `https://t.me/YOUR_BOT?start=ref_${App.user.id}`;
+  App.tg.openTelegramLink(
+    `https://t.me/share/url?url=${encodeURIComponent(link)}`
+  );
+}

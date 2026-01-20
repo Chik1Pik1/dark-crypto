@@ -609,3 +609,86 @@ button:disabled {
   outline: 2px solid #00ffd5;
   outline-offset: 3px;
 }
+
+/* ===== PRODUCTS GRID ===== */
+.products {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 16px;
+  padding: 16px;
+}
+
+/* ===== PRODUCT CARD ===== */
+.product-card {
+  background: #121212;
+  border-radius: 16px;
+  padding: 12px;
+  position: relative;
+  color: #fff;
+}
+
+.product-card img {
+  width: 100%;
+  border-radius: 12px;
+  margin-bottom: 8px;
+}
+
+.product-card h3 {
+  font-size: 14px;
+  margin: 6px 0;
+}
+
+/* ===== PRICE ===== */
+.price-box {
+  background: #b00020;
+  padding: 6px;
+  border-radius: 8px;
+  text-align: center;
+  margin-bottom: 6px;
+  animation: glow 2s infinite;
+}
+
+@keyframes glow {
+  0% { box-shadow: 0 0 5px #b00020; }
+  50% { box-shadow: 0 0 15px #ff1744; }
+  100% { box-shadow: 0 0 5px #b00020; }
+}
+
+/* ===== RATING ===== */
+.rating-box {
+  background: #1f1f1f;
+  padding: 4px 6px;
+  border-radius: 6px;
+  font-size: 12px;
+  margin-bottom: 6px;
+}
+
+/* ===== FAVORITE ===== */
+.fav-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: transparent;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+/* ===== PROFILE ===== */
+.tg-profile {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.tg-avatar,
+.tg-avatar-placeholder {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: #333;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}

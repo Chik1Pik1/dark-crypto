@@ -1,122 +1,44 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dark Crypto</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- Telegram WebApp SDK -->
+  <!-- Telegram WebApp -->
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
-  <!-- Supabase -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-  <!-- TON Connect -->
-  <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
-
   <!-- Styles -->
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-<div style="color:red;font-size:22px;text-align:center">
-  TEST DEPLOY OK
-</div>
+  <!-- ❄ Snow -->
+  <div id="snow"></div>
 
-<!-- 🔐 TELEGRAM LOGIN SCREEN -->
-<div id="tgLoginScreen" class="login-screen">
-  <h1>Dark Crypto</h1>
-  <p>Вход через Telegram</p>
-  <p>Откройте магазин через Telegram</p>
-</div>
-
-<!-- 🛒 MAIN APP -->
-<div class="app" id="app" style="display:none">
-
-  <header>
-
-    <h1>Dark Crypto</h1>
-
-    <div class="profile-center">
-      <div id="tgProfile"></div>
+  <!-- Header -->
+  <header class="header">
+    <div class="user">
+      <img id="user-avatar" src="assets/images/avatar-placeholder.png" />
+      <div id="user-name">Гость</div>
     </div>
-
-    <div class="top-panels">
-
-      <div class="panel">
-        <h3>Реферальная программа</h3>
-        <div id="refBlock"></div>
-      </div>
-
-      <div class="panel">
-        <h3>Кошелёк</h3>
-        <button id="connectWallet">Подключить кошелёк</button>
-        <div id="walletStatus">Кошелёк не подключён</div>
-        <div id="walletInfo"></div>
-      </div>
-
-    </div>
-
-    <div class="balance-block">
-      <div id="balance">Баланс: 0.00 TON</div>
-    </div>
-
   </header>
 
+  <!-- Main -->
   <main>
-    <!-- 🛒 MARKET -->
-    <section
-      id="products"
-      class="products"
-      data-section="market">
-    </section>
-
-    <!-- 🎁 MY PURCHASES -->
-    <section
-      id="myGifts"
-      class="products"
-      data-section="my-gifts"
-      style="display:none">
-      <h2 class="center-title">Здесь будут ваши покупки</h2>
-    </section>
-
-    <!-- ⭐ FAVORITES -->
-    <section
-      id="favorites"
-      class="products"
-      data-section="favorites"
-      style="display:none">
-    </section>
+    <div class="products" id="products"></div>
   </main>
 
-  <!-- 🔻 BOTTOM NAV -->
-  <nav class="bottom-nav">
-    <button class="nav-btn active" data-tab="market">
-      🛒 <span>Маркет</span>
-    </button>
-    <button class="nav-btn" data-tab="my-gifts">
-      🎁 <span>Мои покупки</span>
-    </button>
-    <button class="nav-btn" data-tab="favorites">
-      ⭐ <span>Избранное</span>
-    </button>
-  </nav>
+  <!-- Scripts -->
+  <script src="supabase.js"></script>
 
-</div>
-
-<div id="notification" class="notification"></div>
-
-<!-- ================= SCRIPTS ================= -->
-
-<script src="supabase.js"></script>
-
-<script src="js/ui.js"></script>
-<script src="js/navigation.js"></script>
-<script src="js/wallet.js"></script>
-<script src="js/products.js"></script>
-<script src="js/orders.js"></script>
-<script src="js/favorites.js"></script>
-<script src="js/app.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/products.js"></script>
+  <script src="js/favorites.js"></script>
+  <script src="js/orders.js"></script>
+  <script src="js/wallet.js"></script>
+  <script src="js/navigation.js"></script>
 
 </body>
 </html>

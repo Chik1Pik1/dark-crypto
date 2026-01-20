@@ -1,0 +1,81 @@
+body {
+  margin: 0;
+  background: #0b0b0f;
+  color: #fff;
+  font-family: Arial, sans-serif;
+}
+
+.admin-app {
+  max-width: 500px;
+  margin: auto;
+  padding: 16px;
+}
+
+h1 {
+  text-align: center;
+  color: #00ffd5;
+}
+
+.admin-card {
+  background: #14141c;
+  border-radius: 18px;
+  padding: 16px;
+  margin-bottom: 20px;
+  box-shadow: 0 0 30px rgba(0,0,0,.6);
+}
+
+.admin-card h2 {
+  margin-top: 0;
+  color: #00ffd5;
+}
+
+input, textarea {
+  width: 100%;
+  margin-top: 10px;
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
+  background: #1e1e2a;
+  color: #fff;
+  font-size: 14px;
+}
+
+textarea {
+  resize: none;
+  height: 80px;
+}
+
+button {
+  margin-top: 15px;
+  width: 100%;
+  padding: 12px;
+  border-radius: 14px;
+  border: none;
+  background: linear-gradient(270deg, #00ffd5, #0099ff, #00ffd5);
+  background-size: 400% 400%;
+  animation: gradientMove 4s ease infinite;
+  color: #000;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+@keyframes gradientMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.product-item {
+  padding: 10px;
+  border-bottom: 1px solid #222;
+}
+
+.product-item span {
+  color: #00ffd5;
+}
+
+.delete-btn {
+  background: #ff004c;
+  margin-top: 8px;
+}

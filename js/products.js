@@ -1,76 +1,50 @@
-/* ================== PRODUCTS STATE ================== */
-
-window.productsCache = [];
-
-/* ================== LOAD PRODUCTS ================== */
-
-window.loadProducts = async function () {
-  const { data, error } = await window.supabase
-    .from("products")
-    .select("*")
-    .order("id");
-
-  if (error) {
-    alert("Ошибка загрузки товаров:\n" + error.message);
-    return;
-  }
-
-  window.productsCache = data || [];
-  renderProducts();
-};
-
-/* ================== HELPERS ================== */
-
-function getStockClass(stock) {
-  if (stock >= 10) return "stock-high";
-  if (stock >= 5) return "stock-mid";
-  return "stock-low";
-}
-
-/* ================== RENDER ================== */
-
-function renderProducts() {
+async function loadProducts() {
   const container = document.getElementById("products");
   if (!container) return;
 
+  container.innerHTML = "Загрузка...";
+
+  const { data, error } = await supabase
+    .from("products")
+    .select("*");
+
+  if (error) {
+    container.innerHTML = "Ошибка загрузки товаров";
+    return;
+  }
+
   container.innerHTML = "";
 
-  window.productsCache.forEach(p => {
-    const finalPrice = p.discount
-      ? p.price - (p.price * p.discount) / 100
-      : p.price;
-
+  data.forEach(product => {
     const card = document.createElement("div");
-    card.className = "card";
+    card.className = "product-card";
 
     card.innerHTML = `
-      <img src="${p.image}" alt="${p.title}">
-      <h3>${p.title}</h3>
+      <button class="fav-btn" data-id="${product.id}">❤️</button>
 
-      <p class="description">${p.description || ""}</p>
+      <img src="${product.image}" alt="">
+      <h3>${product.title}</h3>
 
-      <div class="info-badge ${getStockClass(p.stock)}">
-        <div>⭐ ${p.rating}</div>
-        <div>📦 ${p.stock}</div>
-        ${p.discount ? `<div class="discount">-${p.discount}%</div>` : ""}
+      <div class="price-box">
+        ${product.discount > 0
+          ? `<s>${product.price}</s> ${product.price - product.discount}`
+          : product.price
+        } TON
       </div>
 
-      <div class="price">${finalPrice} TON</div>
+      <div class="rating-box">
+        ⭐ ${product.rating} | Осталось: ${product.stock}
+      </div>
 
-      <button class="buy" ${p.stock <= 0 ? "disabled" : ""}>
+      <button onclick="buyProduct(${product.id}, ${product.price})">
         Купить
       </button>
     `;
 
-    const buyBtn = card.querySelector(".buy");
-    buyBtn.onclick = () => {
-      if (typeof window.buyProduct === "function") {
-        window.buyProduct(p.id, finalPrice);
-      } else {
-        alert("Функция покупки недоступна");
-      }
-    };
-
     container.appendChild(card);
   });
+
+  initFavorites();
 }
+
+window.loadProducts = loadProducts;

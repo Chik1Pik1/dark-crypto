@@ -40,6 +40,32 @@ document.addEventListener("DOMContentLoaded", () => {
     `;
   }
 
+// ===== PROFILE =====
+const avatar = user.photo_url
+  ? `<img src="${user.photo_url}" class="tg-avatar">`
+  : `<div class="tg-avatar-placeholder">${user.first_name[0]}</div>`;
+
+document.getElementById("tgProfile").innerHTML = `
+  ${avatar}
+  <div>
+    <b>${user.first_name}</b><br>
+    <span>@${user.username || ""}</span>
+  </div>
+`;
+
+// ===== REFERRAL =====
+const refBlock = document.getElementById("refBlock");
+if (refBlock) {
+  const refLink = `https://t.me/YOUR_BOT_USERNAME?start=${user.id}`;
+  refBlock.innerHTML = `
+    <input value="${refLink}" readonly>
+    <button onclick="navigator.clipboard.writeText('${refLink}')">
+      Скопировать
+    </button>
+  `;
+}
+  
+
   // старт приложения
   initNavigation();
   loadProducts();

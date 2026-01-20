@@ -2,43 +2,36 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dark Crypto</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <!-- Telegram WebApp -->
+  <!-- Telegram -->
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
-  <!-- Styles -->
+  <!-- Supabase -->
+  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-  <!-- ❄ Snow -->
-  <div id="snow"></div>
+  <!-- USER -->
+  <div id="user" style="text-align:center; margin-top:20px;">
+    <img id="user-avatar" style="width:80px;height:80px;border-radius:50%" />
+    <div id="user-name"></div>
+  </div>
 
-  <!-- Header -->
-  <header class="header">
-    <div class="user">
-      <img id="user-avatar" src="assets/images/avatar-placeholder.png" />
-      <div id="user-name">Гость</div>
-    </div>
-  </header>
+  <!-- PRODUCTS -->
+  <div id="products" style="padding:16px;"></div>
 
-  <!-- Main -->
-  <main>
-    <div class="products" id="products"></div>
-  </main>
-
-  <!-- Scripts -->
+  <!-- SCRIPTS -->
   <script src="supabase.js"></script>
 
   <script src="js/app.js"></script>
-  <script src="js/ui.js"></script>
-  <script src="js/products.js"></script>
   <script src="js/favorites.js"></script>
+  <script src="js/products.js"></script>
   <script src="js/orders.js"></script>
-  <script src="js/wallet.js"></script>
-  <script src="js/navigation.js"></script>
+  <script src="js/ui.js"></script>
 
 </body>
 </html>
